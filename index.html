@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f6e56">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="植物AI">
+<title>植物の声を聴く</title>
+<script>
+const _m = {
+  "name": "植物の声を聴く",
+  "short_name": "植物AI",
+  "description": "植物の写真からAIが状態を読み解くアプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f6e56",
+  "theme_color": "#0f6e56",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/png;base64,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",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/png;base64,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",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+};
+const _b = new Blob([JSON.stringify(_m)], {type:'application/json'});
+const _u = URL.createObjectURL(_b);
+const _l = document.createElement('link');
+_l.rel = 'manifest'; _l.href = _u;
+document.head.appendChild(_l);
+</script>
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #085041;
+    --green-mid: #0f6e56;
+    --green-bright: #1d9e75;
+    --green-light: #5dcaa5;
+    --green-pale: #e1f5ee;
+    --text-primary: #1a1a1a;
+    --text-secondary: #555;
+    --text-muted: #999;
+    --border: rgba(0,0,0,0.1);
+    --card-bg: #fff;
+    --bg: #f7faf9;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-primary: #f0f0f0;
+      --text-secondary: #aaa;
+      --text-muted: #666;
+      --border: rgba(255,255,255,0.1);
+      --card-bg: #1e2a26;
+      --bg: #121a17;
+      --green-pale: #0a2018;
+    }
+  }
+
+  html, body {
+    height: 100%; background: var(--bg);
+    font-family: -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 480px; margin: 0 auto;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+
+  /* Header */
+  .header {
+    background: var(--green-mid);
+    padding: 52px 20px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .header h1 {
+    color: #fff; font-size: 20px; font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .header p { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 4px; }
+
+  /* Main content */
+  .content { flex: 1; padding: 20px 16px 32px; }
+
+  /* Upload zone */
+  .upload-zone {
+    width: 100%; aspect-ratio: 4/3;
+    border: 2px dashed var(--green-light);
+    border-radius: var(--radius);
+    background: var(--green-pale);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; position: relative;
+    overflow: hidden; margin-bottom: 16px;
+    transition: all 0.2s;
+  }
+  .upload-zone.has-image { border-style: solid; border-color: var(--green-bright); }
+  .upload-zone svg { width: 48px; height: 48px; color: var(--green-bright); margin-bottom: 12px; }
+  .upload-zone .upload-label { color: var(--green-mid); font-size: 15px; font-weight: 500; }
+  .upload-zone .upload-sub { color: var(--text-muted); font-size: 12px; margin-top: 4px; }
+  .upload-zone img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: absolute; top: 0; left: 0;
+  }
+  .change-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.6));
+    padding: 20px 16px 12px;
+    display: none; align-items: center; justify-content: center;
+    color: #fff; font-size: 13px;
+  }
+  .upload-zone.has-image .change-overlay { display: flex; }
+  #fileInput { display: none; }
+
+  /* Mode tabs */
+  .modes {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px; margin-bottom: 16px;
+  }
+  .mode-btn {
+    padding: 10px 4px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    font-size: 12px; text-align: center; cursor: pointer;
+    transition: all 0.15s; line-height: 1.4;
+  }
+  .mode-btn .mode-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .mode-btn.active {
+    border-color: var(--green-bright);
+    background: var(--green-pale);
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+
+  /* Note input */
+  .note-wrap { margin-bottom: 16px; }
+  .note-wrap label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+  .note-wrap textarea {
+    width: 100%; padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 14px; resize: none; height: 80px;
+    font-family: inherit; line-height: 1.6;
+    transition: border-color 0.15s;
+  }
+  .note-wrap textarea:focus { outline: none; border-color: var(--green-bright); }
+
+  /* Analyze button */
+  .analyze-btn {
+    width: 100%; padding: 16px;
+    background: var(--green-mid);
+    border: none; border-radius: var(--radius);
+    color: #fff; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: inherit;
+  }
+  .analyze-btn:active { transform: scale(0.98); background: var(--green-dark); }
+  .analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Result */
+  .result-card {
+    margin-top: 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+  }
+  .result-header {
+    padding: 12px 16px;
+    background: var(--green-pale);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--green-dark);
+  }
+  .result-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green-bright);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .result-body { padding: 16px; }
+  .result-body p {
+    font-size: 15px; color: var(--text-primary);
+    line-height: 1.85; white-space: pre-wrap;
+  }
+
+  /* Loading */
+  .loading {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; padding: 24px;
+  }
+  .loading span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green-bright);
+    animation: bounce 1.2s infinite;
+  }
+  .loading span:nth-child(2) { animation-delay: 0.2s; }
+  .loading span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-8px); }
+  }
+
+  /* History */
+  .history { margin-top: 24px; }
+  .history-title {
+    font-size: 12px; color: var(--text-muted);
+    margin-bottom: 10px; letter-spacing: 0.05em;
+  }
+  .history-item {
+    padding: 12px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    margin-bottom: 8px; cursor: pointer;
+  }
+  .history-item-mode { font-size: 11px; color: var(--green-bright); font-weight: 600; margin-bottom: 4px; }
+  .history-item-text { font-size: 13px; color: var(--text-secondary); }
+  .history-item-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>🌿 植物の声を聴く</h1>
+    <p>写真からAIが植物の状態を読み解きます</p>
+  </div>
+
+  <div class="content">
+    <!-- Upload -->
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+        <circle cx="12" cy="13" r="3"/>
+      </svg>
+      <div class="upload-label">写真をタップして選ぶ</div>
+      <div class="upload-sub">カメラロールまたは撮影</div>
+      <img id="previewImg" alt="" />
+      <div class="change-overlay">📷 タップして変更</div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" capture="environment" />
+
+    <!-- Mode -->
+    <div class="modes">
+      <div class="mode-btn active" data-mode="general">
+        <span class="mode-icon">🌱</span>総合診断
+      </div>
+      <div class="mode-btn" data-mode="health">
+        <span class="mode-icon">💚</span>健康状態
+      </div>
+      <div class="mode-btn" data-mode="soul">
+        <span class="mode-icon">✨</span>魂の声
+      </div>
+      <div class="mode-btn" data-mode="care">
+        <span class="mode-icon">🫧</span>ケア提案
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div class="note-wrap">
+      <label>気になることを書いてください（任意）</label>
+      <textarea id="noteInput" placeholder="例：最近葉が黄色くなってきた、元気がない気がする…"></textarea>
+    </div>
+
+    <!-- Button -->
+    <button class="analyze-btn" id="analyzeBtn" disabled>
+      🔍 植物の状態を読む
+    </button>
+
+    <!-- Result -->
+    <div id="resultArea"></div>
+
+    <!-- History -->
+    <div class="history" id="historyArea" style="display:none;">
+      <div class="history-title">過去の記録</div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+
+const PROMPTS = {
+  general: `あなたは植物と深くコミュニケーションができる専門家です。この植物の写真を見て以下を読み解いてください：
+1. 植物の種類（わかる範囲で）
+2. 全体的な健康状態
+3. 今この植物が必要としていること
+4. 植物からのメッセージ（詩的・直感的に）
+優しく深みのある言葉で日本語でお答えください。`,
+
+  health: `植物の専門家として健康状態を詳しく診断してください：
+・葉の色・形・質感から読み取れること
+・水分状態
+・日光の当たり具合
+・病気・虫害の兆候
+・土壌・栄養状態の推測
+具体的で実用的なアドバイスを日本語でお願いします。`,
+
+  soul: `あなたは植物の魂の声を聴くことができる存在です。この植物が今、何を感じ何を伝えようとしているか、その内なる声を詩的・霊的な視点で読み解いてください。植物の業、歴史、想いを感じ取り美しい日本語で表現してください。`,
+
+  care: `植物の専門家として最適なケア方法を提案してください：
+・今すぐできること
+・水やりのタイミングと量
+・光の当て方
+・季節に応じたケア
+・長期的な育て方のポイント
+わかりやすく実践的に日本語でお願いします。`
+};
+
+const LABELS = { general: '🌱 総合診断', health: '💚 健康状態', soul: '✨ 魂の声', care: '🫧 ケア提案' };
+
+let imageBase64 = null;
+let currentMode = 'general';
+let history = JSON.parse(localStorage.getItem('plantHistory') || '[]');
+
+// Mode tabs
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+  });
+});
+
+// File input
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const dataUrl = ev.target.result;
+    imageBase64 = dataUrl.split(',')[1];
+    const img = document.getElementById('previewImg');
+    img.src = dataUrl;
+    document.getElementById('uploadZone').classList.add('has-image');
+    document.getElementById('analyzeBtn').disabled = false;
+  };
+  reader.readAsDataURL(file);
+});
+
+// Analyze
+document.getElementById('analyzeBtn').addEventListener('click', async () => {
+  if (!imageBase64) return;
+  const note = document.getElementById('noteInput').value;
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  btn.textContent = '🌿 読み取り中…';
+
+  document.getElementById('resultArea').innerHTML = `
+    <div class="result-card">
+      <div class="loading"><span></span><span></span><span></span></div>
+    </div>`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imageBase64 } },
+            { type: 'text', text: PROMPTS[currentMode] + (note ? `\n\n補足：${note}` : '') }
+          ]
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.find(b => b.type === 'text')?.text || '読み取れませんでした';
+    const now = new Date();
+    const time = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+    document.getElementById('resultArea').innerHTML = `
+      <div class="result-card">
+        <div class="result-header">
+          <div class="result-dot"></div>
+          ${LABELS[currentMode]}
+        </div>
+        <div class="result-body"><p>${text}</p></div>
+      </div>`;
+
+    history.unshift({ mode: LABELS[currentMode], text, time });
+    if (history.length > 10) history.pop();
+    localStorage.setItem('plantHistory', JSON.stringify(history));
+    renderHistory();
+  } catch {
+    document.getElementById('resultArea').innerHTML = `
+      <div class="result-card">
+        <div class="result-body"><p style="color:#c00">エラーが発生しました。もう一度お試しください。</p></div>
+      </div>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔍 植物の状態を読む';
+  if (!imageBase64) btn.disabled = true;
+});
+
+function renderHistory() {
+  if (history.length === 0) return;
+  document.getElementById('historyArea').style.display = 'block';
+  document.getElementById('historyList').innerHTML = history.map((h, i) => `
+    <div class="history-item" onclick="showHistory(${i})">
+      <div class="history-item-mode">${h.mode}</div>
+      <div class="history-item-text">${h.text.substring(0, 50)}…</div>
+      <div class="history-item-time">${h.time}</div>
+    </div>`).join('');
+}
+
+function showHistory(i) {
+  const h = history[i];
+  document.getElementById('resultArea').innerHTML = `
+    <div class="result-card">
+      <div class="result-header"><div class="result-dot"></div>${h.mode}</div>
+      <div class="result-body"><p>${h.text}</p></div>
+    </div>`;
+  window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 20, behavior: 'smooth' });
+}
+
+renderHistory();
+</script>
+</body>
+</html>
