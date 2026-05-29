@@ -2,451 +2,533 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f6e56">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a1628">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="植物AI">
-<title>植物の声を聴く</title>
-<script>
-const _m = {
-  "name": "植物の声を聴く",
-  "short_name": "植物AI",
-  "description": "植物の写真からAIが状態を読み解くアプリ",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#0f6e56",
-  "theme_color": "#0f6e56",
-  "orientation": "portrait",
-  "icons": [
-    {
-      "src": "data:image/png;base64,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",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/png;base64,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",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
-};
-const _b = new Blob([JSON.stringify(_m)], {type:'application/json'});
-const _u = URL.createObjectURL(_b);
-const _l = document.createElement('link');
-_l.rel = 'manifest'; _l.href = _u;
-document.head.appendChild(_l);
-</script>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="AI診断">
+<title>AI診断ツール</title>
 <link rel="icon" href="data:image/png;base64,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">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a1628;--surface:#111d35;--surface2:#1a2a45;
+  --green:#1d9e75;--green-light:#5dcaa5;--green-pale:rgba(29,158,117,0.12);
+  --amber:#e8a838;--amber-pale:rgba(232,168,56,0.12);
+  --blue:#4a9eff;--blue-pale:rgba(74,158,255,0.12);
+  --text:#e8edf5;--text2:#8a9ab8;--text3:#4a5a78;
+  --border:rgba(255,255,255,0.07);--radius:14px;--radius-sm:8px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Serif JP',serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 20% 20%,rgba(29,158,117,0.08) 0%,transparent 50%),
+             radial-gradient(ellipse at 80% 80%,rgba(93,202,165,0.05) 0%,transparent 50%);
+  pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
 
-  :root {
-    --green-dark: #085041;
-    --green-mid: #0f6e56;
-    --green-bright: #1d9e75;
-    --green-light: #5dcaa5;
-    --green-pale: #e1f5ee;
-    --text-primary: #1a1a1a;
-    --text-secondary: #555;
-    --text-muted: #999;
-    --border: rgba(0,0,0,0.1);
-    --card-bg: #fff;
-    --bg: #f7faf9;
-    --radius: 16px;
-    --radius-sm: 10px;
-  }
+.header{padding:52px 20px 20px;text-align:center}
+.header-icon{font-size:28px;margin-bottom:8px}
+.header h1{font-size:20px;font-weight:300;letter-spacing:0.15em;margin-bottom:4px}
+.header p{font-size:11px;color:var(--text2);letter-spacing:0.1em;font-family:'Space Mono',monospace}
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text-primary: #f0f0f0;
-      --text-secondary: #aaa;
-      --text-muted: #666;
-      --border: rgba(255,255,255,0.1);
-      --card-bg: #1e2a26;
-      --bg: #121a17;
-      --green-pale: #0a2018;
-    }
-  }
+.nav{display:flex;border-bottom:1px solid var(--border);margin:0 20px}
+.nav-btn{flex:1;padding:12px 6px;font-size:11px;color:var(--text2);background:none;border:none;
+  cursor:pointer;font-family:'Space Mono',monospace;letter-spacing:0.04em;
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s}
+.nav-btn.active{color:var(--green-light);border-bottom-color:var(--green-light)}
 
-  html, body {
-    height: 100%; background: var(--bg);
-    font-family: -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
-  }
+.content{flex:1;padding:20px;overflow-y:auto}
+.page{display:none}.page.active{display:block}
 
-  .app {
-    max-width: 480px; margin: 0 auto;
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-  }
+/* Upload */
+.upload-zone{width:100%;aspect-ratio:4/3;border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px;transition:border-color 0.2s;}
+.upload-zone:hover{border-color:var(--green)}
+.upload-zone.has-image{border-color:var(--green)}
+.upload-zone svg{width:36px;height:36px;color:var(--text3);margin-bottom:8px}
+.upload-text{font-size:13px;color:var(--text2)}
+.upload-zone img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
+.change-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);
+  color:#fff;font-size:12px;padding:8px;text-align:center;display:none;font-family:'Space Mono',monospace}
+.upload-zone.has-image .change-bar{display:block}
+#fileInput{display:none}
 
-  /* Header */
-  .header {
-    background: var(--green-mid);
-    padding: 52px 20px 20px;
-    text-align: center;
-    position: relative;
-  }
-  .header h1 {
-    color: #fff; font-size: 20px; font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .header p { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 4px; }
+/* Mode grid */
+.mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+.mode-card{padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border);
+  background:var(--surface);cursor:pointer;transition:all 0.15s;}
+.mode-card.active{border-color:var(--green);background:var(--green-pale)}
+.mode-card .mc-icon{font-size:18px;margin-bottom:4px}
+.mode-card .mc-name{font-size:12px;font-weight:500;color:var(--text);font-family:'Space Mono',monospace;margin-bottom:2px}
+.mode-card .mc-desc{font-size:11px;color:var(--text2);line-height:1.3}
 
-  /* Main content */
-  .content { flex: 1; padding: 20px 16px 32px; }
+/* Note */
+.note-label{font-size:11px;color:var(--text2);margin-bottom:6px;display:block;
+  letter-spacing:0.05em;font-family:'Space Mono',monospace}
+.note-input{width:100%;padding:10px 12px;margin-bottom:14px;border:1px solid var(--border);
+  border-radius:var(--radius-sm);background:var(--surface);color:var(--text);
+  font-size:13px;font-family:'Noto Serif JP',serif;resize:none;height:72px;line-height:1.6;
+  transition:border-color 0.2s;}
+.note-input:focus{outline:none;border-color:var(--green)}
 
-  /* Upload zone */
-  .upload-zone {
-    width: 100%; aspect-ratio: 4/3;
-    border: 2px dashed var(--green-light);
-    border-radius: var(--radius);
-    background: var(--green-pale);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    cursor: pointer; position: relative;
-    overflow: hidden; margin-bottom: 16px;
-    transition: all 0.2s;
-  }
-  .upload-zone.has-image { border-style: solid; border-color: var(--green-bright); }
-  .upload-zone svg { width: 48px; height: 48px; color: var(--green-bright); margin-bottom: 12px; }
-  .upload-zone .upload-label { color: var(--green-mid); font-size: 15px; font-weight: 500; }
-  .upload-zone .upload-sub { color: var(--text-muted); font-size: 12px; margin-top: 4px; }
-  .upload-zone img {
-    width: 100%; height: 100%; object-fit: cover;
-    position: absolute; top: 0; left: 0;
-  }
-  .change-overlay {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.6));
-    padding: 20px 16px 12px;
-    display: none; align-items: center; justify-content: center;
-    color: #fff; font-size: 13px;
-  }
-  .upload-zone.has-image .change-overlay { display: flex; }
-  #fileInput { display: none; }
+/* === 精度選択 === */
+.precision-label{font-size:11px;color:var(--text2);margin-bottom:8px;display:block;
+  letter-spacing:0.05em;font-family:'Space Mono',monospace}
+.precision-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.precision-card{
+  padding:12px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:all 0.2s;text-align:center;
+}
+.precision-card.mode-local.active{border-color:var(--amber);background:var(--amber-pale)}
+.precision-card.mode-claude.active{border-color:var(--blue);background:var(--blue-pale)}
+.precision-card .pc-icon{font-size:22px;margin-bottom:6px}
+.precision-card .pc-name{font-size:12px;font-weight:500;font-family:'Space Mono',monospace;margin-bottom:3px}
+.precision-card.mode-local .pc-name{color:var(--amber)}
+.precision-card.mode-claude .pc-name{color:var(--blue)}
+.precision-card .pc-desc{font-size:11px;color:var(--text2);line-height:1.4}
+.precision-card .pc-badge{
+  display:inline-block;margin-top:6px;padding:2px 8px;border-radius:100px;
+  font-size:10px;font-family:'Space Mono',monospace;
+}
+.precision-card.mode-local .pc-badge{background:var(--amber-pale);color:var(--amber)}
+.precision-card.mode-claude .pc-badge{background:var(--blue-pale);color:var(--blue)}
 
-  /* Mode tabs */
-  .modes {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 8px; margin-bottom: 16px;
-  }
-  .mode-btn {
-    padding: 10px 4px; border-radius: var(--radius-sm);
-    border: 1.5px solid var(--border);
-    background: var(--card-bg);
-    color: var(--text-secondary);
-    font-size: 12px; text-align: center; cursor: pointer;
-    transition: all 0.15s; line-height: 1.4;
-  }
-  .mode-btn .mode-icon { font-size: 20px; display: block; margin-bottom: 4px; }
-  .mode-btn.active {
-    border-color: var(--green-bright);
-    background: var(--green-pale);
-    color: var(--green-dark);
-    font-weight: 600;
-  }
+/* Action btn */
+.action-btn{
+  width:100%;padding:15px;border:none;border-radius:var(--radius);
+  font-size:14px;font-family:'Space Mono',monospace;letter-spacing:0.06em;
+  cursor:pointer;transition:all 0.2s;margin-bottom:4px;
+}
+.action-btn:disabled{opacity:0.35;cursor:not-allowed}
+.action-btn.local{background:linear-gradient(135deg,var(--amber),#c47e10);color:#fff}
+.action-btn.claude{background:linear-gradient(135deg,var(--blue),#1a6dd4);color:#fff}
+.action-btn:active{transform:scale(0.98)}
 
-  /* Note input */
-  .note-wrap { margin-bottom: 16px; }
-  .note-wrap label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
-  .note-wrap textarea {
-    width: 100%; padding: 12px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--card-bg);
-    color: var(--text-primary);
-    font-size: 14px; resize: none; height: 80px;
-    font-family: inherit; line-height: 1.6;
-    transition: border-color 0.15s;
-  }
-  .note-wrap textarea:focus { outline: none; border-color: var(--green-bright); }
+/* Result */
+.result-box{margin-top:14px;border-radius:var(--radius);overflow:hidden;display:none}
+.result-header{padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:11px;
+  font-family:'Space Mono',monospace;letter-spacing:0.08em}
+.result-header.local{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(232,168,56,0.2)}
+.result-header.claude{background:var(--blue-pale);color:var(--blue);border:1px solid rgba(74,158,255,0.2)}
+.result-body{padding:14px;border:1px solid var(--border);border-top:none;
+  border-radius:0 0 var(--radius) var(--radius);background:var(--surface)}
+.result-text{font-size:14px;color:var(--text);line-height:1.85;white-space:pre-wrap}
+.result-actions{display:flex;gap:8px;margin-top:12px}
+.r-btn{flex:1;padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border);
+  background:none;color:var(--text2);font-size:11px;font-family:'Space Mono',monospace;
+  cursor:pointer;transition:all 0.15s;}
+.r-btn:hover{border-color:var(--green);color:var(--green-light)}
 
-  /* Analyze button */
-  .analyze-btn {
-    width: 100%; padding: 16px;
-    background: var(--green-mid);
-    border: none; border-radius: var(--radius);
-    color: #fff; font-size: 16px; font-weight: 600;
-    cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-family: inherit;
-  }
-  .analyze-btn:active { transform: scale(0.98); background: var(--green-dark); }
-  .analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+/* Loading */
+.loading{display:flex;align-items:center;justify-content:center;gap:6px;padding:20px}
+.loading span{width:6px;height:6px;border-radius:50%;background:var(--green-light);
+  animation:bounce 1.2s infinite}
+.loading span:nth-child(2){animation-delay:0.2s}
+.loading span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
-  /* Result */
-  .result-card {
-    margin-top: 20px;
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    border: 1.5px solid var(--border);
-    overflow: hidden;
-  }
-  .result-header {
-    padding: 12px 16px;
-    background: var(--green-pale);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600; color: var(--green-dark);
-  }
-  .result-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green-bright);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  .result-body { padding: 16px; }
-  .result-body p {
-    font-size: 15px; color: var(--text-primary);
-    line-height: 1.85; white-space: pre-wrap;
-  }
+/* Rules page */
+.rules-header{margin-bottom:16px}
+.rules-header h2{font-size:15px;font-weight:300;letter-spacing:0.1em;margin-bottom:4px}
+.rules-header p{font-size:12px;color:var(--text2)}
+.rule-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;margin-bottom:10px;}
+.rule-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.rule-name{font-size:12px;font-weight:500;color:var(--text);font-family:'Space Mono',monospace}
+.rule-toggle{position:relative;width:40px;height:22px;background:var(--text3);border-radius:11px;
+  cursor:pointer;transition:background 0.2s;border:none;flex-shrink:0;}
+.rule-toggle.on{background:var(--green)}
+.rule-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;
+  border-radius:50%;background:#fff;transition:transform 0.2s;}
+.rule-toggle.on::after{transform:translateX(18px)}
+.rule-desc{font-size:11px;color:var(--text2);line-height:1.4;margin-bottom:8px}
+.rule-textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface2);color:var(--text);font-size:12px;font-family:'Noto Serif JP',serif;
+  resize:none;line-height:1.6;transition:border-color 0.2s;}
+.rule-textarea:focus{outline:none;border-color:var(--green)}
+.rule-textarea:disabled{opacity:0.35;cursor:not-allowed}
 
-  /* Loading */
-  .loading {
-    display: flex; align-items: center; justify-content: center;
-    gap: 6px; padding: 24px;
-  }
-  .loading span {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green-bright);
-    animation: bounce 1.2s infinite;
-  }
-  .loading span:nth-child(2) { animation-delay: 0.2s; }
-  .loading span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-8px); }
-  }
+/* Local answers editor */
+.local-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.local-section h3{font-size:13px;font-weight:500;color:var(--amber);font-family:'Space Mono',monospace;
+  letter-spacing:0.08em;margin-bottom:4px}
+.local-section p{font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.5}
+.local-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px;margin-bottom:8px;}
+.local-card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.local-icon{font-size:16px}
+.local-name{font-size:12px;font-weight:500;color:var(--text);font-family:'Space Mono',monospace}
 
-  /* History */
-  .history { margin-top: 24px; }
-  .history-title {
-    font-size: 12px; color: var(--text-muted);
-    margin-bottom: 10px; letter-spacing: 0.05em;
-  }
-  .history-item {
-    padding: 12px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    margin-bottom: 8px; cursor: pointer;
-  }
-  .history-item-mode { font-size: 11px; color: var(--green-bright); font-weight: 600; margin-bottom: 4px; }
-  .history-item-text { font-size: 13px; color: var(--text-secondary); }
-  .history-item-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.add-rule-btn{width:100%;padding:12px;border:1px dashed var(--border);border-radius:var(--radius);
+  background:none;color:var(--text2);font-size:12px;font-family:'Space Mono',monospace;
+  cursor:pointer;letter-spacing:0.05em;transition:all 0.2s;margin-bottom:10px;}
+.add-rule-btn:hover{border-color:var(--green);color:var(--green-light)}
+.save-btn{width:100%;padding:13px;border:1px solid var(--green);border-radius:var(--radius);
+  background:none;color:var(--green-light);font-size:12px;font-family:'Space Mono',monospace;
+  letter-spacing:0.08em;cursor:pointer;transition:all 0.2s;}
+.save-btn:hover{background:var(--green-pale)}
+
+/* Logs */
+.log-empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px}
+.log-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
+.log-item:hover{border-color:var(--text3)}
+.log-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.log-mode{font-size:11px;font-family:'Space Mono',monospace}
+.log-mode.local{color:var(--amber)}
+.log-mode.claude{color:var(--blue)}
+.log-time{font-size:10px;color:var(--text3);font-family:'Space Mono',monospace}
+.log-preview{font-size:12px;color:var(--text2);line-height:1.4}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--green);color:#fff;padding:10px 20px;border-radius:100px;
+  font-size:12px;font-family:'Space Mono',monospace;opacity:0;transition:all 0.3s;
+  pointer-events:none;z-index:100;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="header">
-    <h1>🌿 植物の声を聴く</h1>
-    <p>写真からAIが植物の状態を読み解きます</p>
+    <div class="header-icon">🌿</div>
+    <h1>AI 診 断 ツ ー ル</h1>
+    <p>PLANT · NATURE · SOUL READER</p>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn active" data-page="diagnose">診断</button>
+    <button class="nav-btn" data-page="rules">AIルール</button>
+    <button class="nav-btn" data-page="logs">記録</button>
   </div>
 
   <div class="content">
-    <!-- Upload -->
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-        <circle cx="12" cy="13" r="3"/>
-      </svg>
-      <div class="upload-label">写真をタップして選ぶ</div>
-      <div class="upload-sub">カメラロールまたは撮影</div>
-      <img id="previewImg" alt="" />
-      <div class="change-overlay">📷 タップして変更</div>
-    </div>
-    <input type="file" id="fileInput" accept="image/*" capture="environment" />
 
-    <!-- Mode -->
-    <div class="modes">
-      <div class="mode-btn active" data-mode="general">
-        <span class="mode-icon">🌱</span>総合診断
+    <!-- 診断ページ -->
+    <div class="page active" id="page-diagnose">
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+        <div class="upload-text">写真をタップして選ぶ</div>
+        <img id="previewImg" alt=""/>
+        <div class="change-bar">📷 タップして変更</div>
       </div>
-      <div class="mode-btn" data-mode="health">
-        <span class="mode-icon">💚</span>健康状態
+      <input type="file" id="fileInput" accept="image/*"/>
+
+      <div class="mode-grid" id="modeGrid"></div>
+
+      <label class="note-label">気になること（任意）</label>
+      <textarea class="note-input" id="noteInput" placeholder="例：最近葉が黄色くなってきた…"></textarea>
+
+      <!-- 精度選択 -->
+      <label class="precision-label">▸ 回答モードを選ぶ</label>
+      <div class="precision-grid">
+        <div class="precision-card mode-local active" data-precision="local">
+          <div class="pc-icon">⚡</div>
+          <div class="pc-name">かんたん回答</div>
+          <div class="pc-desc">ルール設定をもとにすぐ答えます</div>
+          <div class="pc-badge">オフライン対応</div>
+        </div>
+        <div class="precision-card mode-claude" data-precision="claude">
+          <div class="pc-icon">🤖</div>
+          <div class="pc-name">Claude連携</div>
+          <div class="pc-desc">AIが写真を見て詳しく分析します</div>
+          <div class="pc-badge">高精度</div>
+        </div>
       </div>
-      <div class="mode-btn" data-mode="soul">
-        <span class="mode-icon">✨</span>魂の声
-      </div>
-      <div class="mode-btn" data-mode="care">
-        <span class="mode-icon">🫧</span>ケア提案
+
+      <button class="action-btn local" id="actionBtn" disabled>⚡ かんたん診断する</button>
+
+      <div class="result-box" id="resultBox">
+        <div class="result-header local" id="resultHeader">▸ LOCAL ANSWER</div>
+        <div class="result-body">
+          <div class="result-text" id="resultText"></div>
+          <div class="result-actions">
+            <button class="r-btn" id="switchToClaudeBtn">🤖 Claudeでより詳しく →</button>
+            <button class="r-btn" id="saveLogBtn">📝 記録に保存</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Note -->
-    <div class="note-wrap">
-      <label>気になることを書いてください（任意）</label>
-      <textarea id="noteInput" placeholder="例：最近葉が黄色くなってきた、元気がない気がする…"></textarea>
+    <!-- AIルールページ -->
+    <div class="page" id="page-rules">
+      <div class="rules-header">
+        <h2>AI ルール設定</h2>
+        <p>Claudeへの指示・かんたん回答の内容を設定します</p>
+      </div>
+      <div id="rulesContainer"></div>
+      <button class="add-rule-btn" id="addRuleBtn">＋ ルールを追加</button>
+
+      <div class="local-section">
+        <h3>⚡ かんたん回答の設定</h3>
+        <p>モードごとにオフラインで表示する定型回答を設定できます。写真が不要な基本情報に使います。</p>
+        <div id="localAnswersContainer"></div>
+      </div>
+
+      <button class="save-btn" id="saveRulesBtn">✓ 設定を保存</button>
     </div>
 
-    <!-- Button -->
-    <button class="analyze-btn" id="analyzeBtn" disabled>
-      🔍 植物の状態を読む
-    </button>
-
-    <!-- Result -->
-    <div id="resultArea"></div>
-
-    <!-- History -->
-    <div class="history" id="historyArea" style="display:none;">
-      <div class="history-title">過去の記録</div>
-      <div id="historyList"></div>
+    <!-- 記録ページ -->
+    <div class="page" id="page-logs">
+      <div id="logsContainer"></div>
     </div>
+
   </div>
 </div>
+<div class="toast" id="toast"></div>
 
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
-}
+const MODES_DEFAULT = [
+  {id:'general',name:'総合診断',icon:'🌱',desc:'種類・状態・メッセージ',
+    prompt:'この植物の種類・健康状態・必要なこと・植物からのメッセージを総合的に読み解いてください。',
+    localAnswer:'【総合診断】\n\n植物の状態を確認するには:\n・葉の色が均一で鮮やかか\n・茎がしっかり立っているか\n・新芽が出ているか\n\nより詳しい診断はClaudeに写真を送ってください。'},
+  {id:'health',name:'健康状態',icon:'💚',desc:'病気・栄養・水分',
+    prompt:'この植物の健康状態を詳しく診断してください。葉の色・水分・日光・病気の兆候を見てください。',
+    localAnswer:'【健康チェックリスト】\n\n✓ 水分：土を指で触って乾いていたら水やりのサイン\n✓ 日光：1日6時間以上の明るい場所が理想\n✓ 栄養：葉が黄色→窒素不足、紫色→リン不足の可能性\n✓ 病害虫：葉の裏を確認\n\n写真をClaudeに送ると詳しく診断できます。'},
+  {id:'soul',name:'魂の声',icon:'✨',desc:'詩的・霊的な視点',
+    prompt:'この植物が今何を感じ伝えようとしているか、魂の声を詩的・霊的な視点で読み解いてください。',
+    localAnswer:'【植物の魂について】\n\n植物は言葉を持たないが、その存在そのもので語りかけている。\n\n根は大地への信頼、\n葉は光への渇望、\n花は純粋な喜びの表現。\n\nあなたの植物が今何を語っているか、\nClaudeに写真を送ると読み解きます。'},
+  {id:'care',name:'ケア提案',icon:'🫧',desc:'今すぐできるケア',
+    prompt:'この植物に最適なケア方法を提案してください。水やり・光・季節のケアなど実践的に。',
+    localAnswer:'【基本のケア】\n\n💧 水やり：土の表面が乾いたら\n☀️ 日光：明るい窓辺（直射日光は避ける）\n🌡️ 温度：15〜25℃が多くの植物に適切\n✂️ 剪定：枯れた葉はすぐに取り除く\n🪴 植え替え：根が鉢底から出たらサイン\n\n植物の種類に合わせた詳細はClaudeへ。'},
+  {id:'history',name:'植物の歴史',icon:'📜',desc:'起源と文化的意味',
+    prompt:'この植物の種類を特定し、起源・歴史・文化的な意味・人類との関わりを教えてください。',
+    localAnswer:'【植物と人類の歴史】\n\n植物は人類の歴史とともに歩んできた。\n薬として、食料として、精神的なシンボルとして。\n\n写真をClaudeに送ると、この植物の具体的な歴史と文化的背景を詳しく教えてもらえます。'},
+  {id:'ecosystem',name:'生態系',icon:'🌍',desc:'自然界での役割',
+    prompt:'この植物の生態系での役割、他の生物との関係、環境への影響について教えてください。',
+    localAnswer:'【植物と生態系】\n\n植物は生態系の基盤。\n・光合成で酸素を生み出す\n・昆虫・鳥・動物の食料と住処\n・土壌を守り水を蓄える\n・他の植物と地下ネットワークで交信\n\nこの植物の具体的な役割はClaudeに写真を送ると詳しく分析できます。'}
+];
 
-const PROMPTS = {
-  general: `あなたは植物と深くコミュニケーションができる専門家です。この植物の写真を見て以下を読み解いてください：
-1. 植物の種類（わかる範囲で）
-2. 全体的な健康状態
-3. 今この植物が必要としていること
-4. 植物からのメッセージ（詩的・直感的に）
-優しく深みのある言葉で日本語でお答えください。`,
+const RULES_DEFAULT = [
+  {id:'tone',name:'話し方のトーン',desc:'Claudeの返答スタイルを設定します',enabled:true,prompt:'優しく詩的な言葉で、深みのある文章で答えてください。'},
+  {id:'length',name:'返答の長さ',desc:'詳しく・簡潔にを選べます',enabled:true,prompt:'300〜500文字程度で詳しく答えてください。'},
+  {id:'lang',name:'言語スタイル',desc:'専門的・やさしいなど',enabled:true,prompt:'誰でもわかりやすい言葉で説明してください。'},
+  {id:'spiritual',name:'スピリチュアル視点',desc:'魂・業・因果の観点を加える',enabled:false,prompt:'植物の持つ魂的・スピリチュアルな側面も含めて答えてください。'},
+  {id:'science',name:'科学的視点',desc:'学術的な情報も加える',enabled:false,prompt:'植物学的・生態学的な科学的知見も交えて答えてください。'},
+  {id:'custom',name:'カスタムルール',desc:'自由に指示を追加できます',enabled:false,prompt:''}
+];
 
-  health: `植物の専門家として健康状態を詳しく診断してください：
-・葉の色・形・質感から読み取れること
-・水分状態
-・日光の当たり具合
-・病気・虫害の兆候
-・土壌・栄養状態の推測
-具体的で実用的なアドバイスを日本語でお願いします。`,
+let modes = JSON.parse(localStorage.getItem('modes')||'null')||MODES_DEFAULT;
+let rules = JSON.parse(localStorage.getItem('rules')||'null')||RULES_DEFAULT;
+let logs = JSON.parse(localStorage.getItem('logs')||'[]');
+let currentMode = modes[0].id;
+let currentPrecision = 'local';
+let imageReady = false;
+let lastResult = null;
 
-  soul: `あなたは植物の魂の声を聴くことができる存在です。この植物が今、何を感じ何を伝えようとしているか、その内なる声を詩的・霊的な視点で読み解いてください。植物の業、歴史、想いを感じ取り美しい日本語で表現してください。`,
-
-  care: `植物の専門家として最適なケア方法を提案してください：
-・今すぐできること
-・水やりのタイミングと量
-・光の当て方
-・季節に応じたケア
-・長期的な育て方のポイント
-わかりやすく実践的に日本語でお願いします。`
-};
-
-const LABELS = { general: '🌱 総合診断', health: '💚 健康状態', soul: '✨ 魂の声', care: '🫧 ケア提案' };
-
-let imageBase64 = null;
-let currentMode = 'general';
-let history = JSON.parse(localStorage.getItem('plantHistory') || '[]');
-
-// Mode tabs
-document.querySelectorAll('.mode-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+// Nav
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     btn.classList.add('active');
-    currentMode = btn.dataset.mode;
+    document.getElementById('page-'+btn.dataset.page).classList.add('active');
+    if(btn.dataset.page==='logs') renderLogs();
   });
 });
 
-// File input
-document.getElementById('fileInput').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const dataUrl = ev.target.result;
-    imageBase64 = dataUrl.split(',')[1];
-    const img = document.getElementById('previewImg');
-    img.src = dataUrl;
+// Modes
+function renderModes(){
+  const grid=document.getElementById('modeGrid');
+  grid.innerHTML=modes.map(m=>`
+    <div class="mode-card ${m.id===currentMode?'active':''}" data-id="${m.id}">
+      <div class="mc-icon">${m.icon}</div>
+      <div class="mc-name">${m.name}</div>
+      <div class="mc-desc">${m.desc}</div>
+    </div>`).join('');
+  grid.querySelectorAll('.mode-card').forEach(c=>{
+    c.addEventListener('click',()=>{currentMode=c.dataset.id;renderModes();});
+  });
+}
+renderModes();
+
+// Precision
+document.querySelectorAll('.precision-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    document.querySelectorAll('.precision-card').forEach(c=>c.classList.remove('active'));
+    card.classList.add('active');
+    currentPrecision=card.dataset.precision;
+    const btn=document.getElementById('actionBtn');
+    if(currentPrecision==='local'){
+      btn.className='action-btn local';
+      btn.textContent='⚡ かんたん診断する';
+    } else {
+      btn.className='action-btn claude';
+      btn.textContent='🤖 Claude連携で診断する';
+    }
+    if(imageReady||currentPrecision==='local') btn.disabled=false;
+  });
+});
+
+// Upload
+document.getElementById('fileInput').addEventListener('change',function(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    document.getElementById('previewImg').src=ev.target.result;
     document.getElementById('uploadZone').classList.add('has-image');
-    document.getElementById('analyzeBtn').disabled = false;
+    imageReady=true;
+    document.getElementById('actionBtn').disabled=false;
   };
   reader.readAsDataURL(file);
 });
 
-// Analyze
-document.getElementById('analyzeBtn').addEventListener('click', async () => {
-  if (!imageBase64) return;
-  const note = document.getElementById('noteInput').value;
-  const btn = document.getElementById('analyzeBtn');
-  btn.disabled = true;
-  btn.textContent = '🌿 読み取り中…';
-
-  document.getElementById('resultArea').innerHTML = `
-    <div class="result-card">
-      <div class="loading"><span></span><span></span><span></span></div>
-    </div>`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imageBase64 } },
-            { type: 'text', text: PROMPTS[currentMode] + (note ? `\n\n補足：${note}` : '') }
-          ]
-        }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.find(b => b.type === 'text')?.text || '読み取れませんでした';
-    const now = new Date();
-    const time = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-
-    document.getElementById('resultArea').innerHTML = `
-      <div class="result-card">
-        <div class="result-header">
-          <div class="result-dot"></div>
-          ${LABELS[currentMode]}
-        </div>
-        <div class="result-body"><p>${text}</p></div>
-      </div>`;
-
-    history.unshift({ mode: LABELS[currentMode], text, time });
-    if (history.length > 10) history.pop();
-    localStorage.setItem('plantHistory', JSON.stringify(history));
-    renderHistory();
-  } catch {
-    document.getElementById('resultArea').innerHTML = `
-      <div class="result-card">
-        <div class="result-body"><p style="color:#c00">エラーが発生しました。もう一度お試しください。</p></div>
-      </div>`;
-  }
-
-  btn.disabled = false;
-  btn.textContent = '🔍 植物の状態を読む';
-  if (!imageBase64) btn.disabled = true;
+// Action btn
+document.getElementById('actionBtn').addEventListener('click',()=>{
+  if(currentPrecision==='local') runLocal();
+  else runClaude();
 });
 
-function renderHistory() {
-  if (history.length === 0) return;
-  document.getElementById('historyArea').style.display = 'block';
-  document.getElementById('historyList').innerHTML = history.map((h, i) => `
-    <div class="history-item" onclick="showHistory(${i})">
-      <div class="history-item-mode">${h.mode}</div>
-      <div class="history-item-text">${h.text.substring(0, 50)}…</div>
-      <div class="history-item-time">${h.time}</div>
+function runLocal(){
+  const mode=modes.find(m=>m.id===currentMode);
+  const note=document.getElementById('noteInput').value;
+  const activeRules=rules.filter(r=>r.enabled&&r.prompt).map(r=>r.prompt).join(' ');
+  let answer=mode.localAnswer||'この診断モードのかんたん回答は設定されていません。\nAIルール設定から定型回答を入力してください。';
+  if(note) answer+=`\n\n📝 メモ：${note}`;
+
+  const box=document.getElementById('resultBox');
+  const header=document.getElementById('resultHeader');
+  const txt=document.getElementById('resultText');
+  header.className='result-header local';
+  header.textContent='⚡ かんたん回答';
+  txt.textContent=answer;
+  box.style.display='block';
+  lastResult={mode:mode.name,type:'local',text:answer,time:new Date().toLocaleString('ja-JP')};
+  document.getElementById('switchToClaudeBtn').style.display='';
+}
+
+function runClaude(){
+  const mode=modes.find(m=>m.id===currentMode);
+  const note=document.getElementById('noteInput').value;
+  const activeRules=rules.filter(r=>r.enabled&&r.prompt).map(r=>r.prompt).join(' ');
+  const prompt=[mode.prompt,activeRules,note?'気になること：'+note:''].filter(Boolean).join('\n\n');
+
+  const box=document.getElementById('resultBox');
+  const header=document.getElementById('resultHeader');
+  const txt=document.getElementById('resultText');
+  header.className='result-header claude';
+  header.textContent='🤖 Claude連携 — メッセージを送信中…';
+  txt.innerHTML='<div class="loading"><span></span><span></span><span></span></div>';
+  box.style.display='block';
+  document.getElementById('switchToClaudeBtn').style.display='none';
+  lastResult={mode:mode.name,type:'claude',text:prompt,time:new Date().toLocaleString('ja-JP')};
+  sendPrompt('【'+mode.name+'】\n\n'+prompt+(imageReady?'\n\n※植物の写真もこのチャットにアップロードしてください🌿':''));
+  txt.textContent='Claudeにメッセージを送りました。\nこのチャット画面で回答を確認してください。\n\n'+(imageReady?'📷 写真もチャットにアップロードしてください。':'');
+  header.textContent='🤖 Claude連携 — 送信完了';
+}
+
+// Switch to Claude
+document.getElementById('switchToClaudeBtn').addEventListener('click',()=>{
+  document.querySelectorAll('.precision-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.precision-card.mode-claude').classList.add('active');
+  currentPrecision='claude';
+  const btn=document.getElementById('actionBtn');
+  btn.className='action-btn claude';
+  btn.textContent='🤖 Claude連携で診断する';
+  runClaude();
+});
+
+// Save log
+document.getElementById('saveLogBtn').addEventListener('click',()=>{
+  if(!lastResult) return;
+  logs.unshift(lastResult);
+  if(logs.length>30) logs.pop();
+  localStorage.setItem('logs',JSON.stringify(logs));
+  showToast('✓ 記録に保存しました');
+});
+
+// Rules
+function renderRules(){
+  const c=document.getElementById('rulesContainer');
+  c.innerHTML=rules.map((r,i)=>`
+    <div class="rule-card">
+      <div class="rule-top">
+        <div class="rule-name">${r.name}</div>
+        <button class="rule-toggle ${r.enabled?'on':''}" data-i="${i}" aria-label="オン/オフ"></button>
+      </div>
+      <div class="rule-desc">${r.desc}</div>
+      <textarea class="rule-textarea" data-i="${i}" rows="2" ${r.enabled?'':'disabled'}
+        placeholder="Claudeへの指示を入力…">${r.prompt}</textarea>
+    </div>`).join('');
+  c.querySelectorAll('.rule-toggle').forEach(btn=>{
+    btn.addEventListener('click',()=>{rules[+btn.dataset.i].enabled=!rules[+btn.dataset.i].enabled;renderRules();});
+  });
+  c.querySelectorAll('.rule-textarea').forEach(ta=>{
+    ta.addEventListener('input',()=>{rules[+ta.dataset.i].prompt=ta.value;});
+  });
+}
+renderRules();
+
+// Local answers editor
+function renderLocalAnswers(){
+  const c=document.getElementById('localAnswersContainer');
+  c.innerHTML=modes.map((m,i)=>`
+    <div class="local-card">
+      <div class="local-card-top">
+        <span class="local-icon">${m.icon}</span>
+        <span class="local-name">${m.name}</span>
+      </div>
+      <textarea class="rule-textarea" data-mi="${i}" rows="4"
+        placeholder="かんたん回答の内容を入力…">${m.localAnswer||''}</textarea>
+    </div>`).join('');
+  c.querySelectorAll('textarea').forEach(ta=>{
+    ta.addEventListener('input',()=>{modes[+ta.dataset.mi].localAnswer=ta.value;});
+  });
+}
+renderLocalAnswers();
+
+document.getElementById('addRuleBtn').addEventListener('click',()=>{
+  rules.push({id:'c'+Date.now(),name:'カスタムルール',desc:'自由に指示を入力',enabled:true,prompt:''});
+  renderRules();showToast('ルールを追加しました');
+});
+
+document.getElementById('saveRulesBtn').addEventListener('click',()=>{
+  localStorage.setItem('rules',JSON.stringify(rules));
+  localStorage.setItem('modes',JSON.stringify(modes));
+  showToast('✓ 設定を保存しました');
+});
+
+// Logs
+function renderLogs(){
+  const c=document.getElementById('logsContainer');
+  if(logs.length===0){c.innerHTML='<div class="log-empty">まだ記録がありません</div>';return;}
+  c.innerHTML=logs.map((l,i)=>`
+    <div class="log-item">
+      <div class="log-item-top">
+        <span class="log-mode ${l.type}">${l.type==='local'?'⚡':'🤖'} ${l.mode}</span>
+        <span class="log-time">${l.time}</span>
+      </div>
+      <div class="log-preview">${l.text.substring(0,60)}…</div>
     </div>`).join('');
 }
 
-function showHistory(i) {
-  const h = history[i];
-  document.getElementById('resultArea').innerHTML = `
-    <div class="result-card">
-      <div class="result-header"><div class="result-dot"></div>${h.mode}</div>
-      <div class="result-body"><p>${h.text}</p></div>
-    </div>`;
-  window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 20, behavior: 'smooth' });
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-renderHistory();
+// Default: localモードはボタン有効
+document.getElementById('actionBtn').disabled=false;
+
+// PWA
+const _m={name:'AI診断ツール',short_name:'AI診断',start_url:'./index.html',
+  display:'standalone',background_color:'#0a1628',theme_color:'#0a1628',
+  icons:[
+    {src:'data:image/png;base64,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',sizes:'192x192',type:'image/png',purpose:'any maskable'},
+    {src:'data:image/png;base64,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',sizes:'512x512',type:'image/png',purpose:'any maskable'}
+  ]};
+const _b=new Blob([JSON.stringify(_m)],{type:'application/json'});
+const _l=document.createElement('link');_l.rel='manifest';_l.href=URL.createObjectURL(_b);
+document.head.appendChild(_l);
 </script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});</script>
 </body>
 </html>
